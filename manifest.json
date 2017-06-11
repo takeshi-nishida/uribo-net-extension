@@ -1,0 +1,27 @@
+﻿{
+  "manifest_version": 2,
+  "name": "Uribo-Net extension",
+  "version": "0.0.1",
+
+  "description": "神戸大学教務情報システム「うりぼーネット」を少し便利にする拡張機能です",
+
+  "content_scripts": [
+    {
+      "matches": [ "https://kym-web.ofc.kobe-u.ac.jp/campusweb/campusportal.do?page=main&tabId=*" ],
+      "js": [ "jquery.js", "all.js" ]
+    },
+    {
+      "matches": [ "https://kym-web.ofc.kobe-u.ac.jp/campusweb/campusportal.do?page=main&tabId=sy" ],
+      "js": [ "jquery.js", "syllabus.js" ],
+      "run_at": "document_end"
+    }
+  ],
+
+  "options_ui": {
+    "page": "options.html",
+    "chrome_style": true
+  },
+
+
+  "permissions": ["storage"]
+}
