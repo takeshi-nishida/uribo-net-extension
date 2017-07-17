@@ -1,15 +1,16 @@
 ﻿# Uribo-net Extension
 [うりぼーネット](https://kym-web.ofc.kobe-u.ac.jp/campusweb)
 （神戸大学教務情報システム）を少し使いやすくする Chrome 拡張機能です。
-
-- 神戸大学以外にも Campus Web を使っている大学には有用かもしれません
+神戸大学以外にも Campus Web を使っている大学には有用かもしれません
 
 ## 利用方法
-Chrome Web Store にはまだ置いていません（置いたら追記します）
-1. ソースコードをダウンロードする
+[Chrome Web Store](https://chrome.google.com/webstore/detail/uribo-net-extension/pdoeillkiojolpcimcffhhdpeldcfnkj) からインストールしてください。
+アイコンをクリックするとうりぼーねっとが開きます。拡張機能の設定画面からオプション設定が可能です。
+
+開発に参加したい場合は以下のようにしてください。
+1. プロジェクトを fork, clone する
 2. Chrome のメニュー「その他のツール > 拡張機能」を開く
-3. 「パッケージ化されていない拡張機能を読み込む」からダウンロードしたファイルを指定する
-4. 教務情報システムにアクセスする
+3. 「パッケージ化されていない拡張機能を読み込む」から clone したファイルを指定する
 
 ## 機能（実装済み & 実装予定）
 実装済みの機能はチェックされています。
