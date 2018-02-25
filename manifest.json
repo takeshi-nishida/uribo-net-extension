@@ -29,12 +29,12 @@
       "js": [ "jquery.js", "all.js" ]
     },
     {
-      "matches": [ "https://kym-web.ofc.kobe-u.ac.jp/campusweb/campusportal.do?page=main&tabId=sy" ],
+      "matches": [ "https://kym-web.ofc.kobe-u.ac.jp/campusweb/campusportal.do?page=main&tabId=sy*" ],
       "js": [ "jquery.js", "syllabus.js" ],
       "run_at": "document_end"
     },
     {
-      "matches": [ "https://kym-web.ofc.kobe-u.ac.jp/campusweb/campusportal.do?page=main&tabId=en" ],
+      "matches": [ "https://kym-web.ofc.kobe-u.ac.jp/campusweb/campusportal.do?page=main&tabId=en*" ],
       "js": [ "jquery.js", "enquete.js" ]
     }
   ],
