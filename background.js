@@ -4,5 +4,5 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
 });
 
 chrome.browserAction.onClicked.addListener(function (tab) {
-    chrome.tabs.create({ url: "https://kym-web.ofc.kobe-u.ac.jp/campusweb" });
+    chrome.tabs.create({ url: "https://kym22-web.ofc.kobe-u.ac.jp/campusweb/" });
 });
