@@ -134,7 +134,7 @@ if (table) {
     const rows = tbody.find("tr:gt(0)");
     const todayRows = rows.filter(function(index){
         return $(this).children().eq(i2).text().includes(dayOfWeek);
-    })
+    });
 
     todayRows.css('border', '2px dashed black');
     console.log(todayRows);

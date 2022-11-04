@@ -30,7 +30,7 @@
     },
     {
       "matches": [ "https://kym22-web.ofc.kobe-u.ac.jp/campusweb/campussquare.do?*" ],
-      "js": [ "jquery.js", "syllabus.js", "enquete.js" ],
+      "js": [ "jquery.js", "syllabus.js", "enquete.js", "roster.js" ],
       "run_at": "document_end"
     }
   ],
