@@ -1,5 +1,5 @@
-﻿var terms = ["前期", "第1クォーター", "第2クォーター", "後期", "第3クォーター", "第4クォーター", "通年"];
-var examples = {
+﻿const terms = ["前期", "第1クォーター", "第2クォーター", "後期", "第3クォーター", "第4クォーター", "通年"];
+const examples = {
     jugyo_theme_Jp: "この授業では～について学習する。",
     jugyo_theme_En: "This course is designed for students to acquire ...",
     jugyo_mokuhyo_Jp: "この授業では～を習得することを目標とする。",
@@ -21,114 +21,121 @@ var courseName, kyokanName;
 
 console.log("running syllabus.js");
 
-$("#main-frame-if").on('load', function () {
-    console.log("iframe loaded");
+const shozokuSelect = $("#jikanwariShozokuCode");
 
-    var contents = $(this).contents();
+if (shozokuSelect) {
+    console.log("syllabus.js: shozoku select found.");
 
-    var shozokuSelect = contents.find("#jikanwariShozokuCode:visible");
-    if (shozokuSelect.length) {
-//        shozokuSelect.val([]);
-
-        var p = $("<div><span style='visibility:hidden'>： </span></div>");
-        shozokuSelect.after(p);
-
-//        shozokuSelect.change(function () { contents.find("#kyokannm").val(""); });
-
-        var openOption = $("<button>拡張機能の設定を表示</button>");
+    shozokuSelect.change(function () { $("#kyokannm").val(""); });
+ 
+    const gakkiSelect = shozokuSelect.closest("table").find("#nendo");
+    if(gakkiSelect){
+        const openOption = $("<button style='margin-left: 1em'>所属表示設定</button>");
         openOption.click(function (e) {
-            chrome.runtime.sendMessage({ type: "open option" }, function (res) { console.log(res); });
+            chrome.runtime.sendMessage({ type: "open option" }, res => console.log(res));
             e.preventDefault();
         });
-        p.append(openOption);
-
-        chrome.storage.sync.get("shozoku", function (options) {
-            if (options.shozoku) {
-                shozokuSelect.children().hide();
-                var expr = options.shozoku.map(function (s) { return '[value=' + s + ']' }).join(',');
-                shozokuSelect.children(expr).show();
-
-                var showAll = $("<button>すべての所属を表示</button>");
-                showAll.click(function (e) {
-                    shozokuSelect.children().show();
-                    e.preventDefault();
-                });
-                p.append(showAll);
-            }
-
-            var defaultSelection = shozokuSelect.find(":contains('指示なし')");
-            if (!defaultSelection.length) {
-                shozokuSelect.prepend($('<option value="" style="" selected>指示なし</option>'));
-            }
-        });
+        gakkiSelect.after(openOption);
     }
+ 
+    chrome.storage.sync.get("shozoku", function (options) {
+        if (options.shozoku) {
+            shozokuSelect.children().hide();
+            const expr = options.shozoku.map(s => '[value=' + s + ']').join(',');
+            shozokuSelect.children(expr).show();
 
-    var title = contents.find("#main-portlet-title > span").text();
-    if (title && title.includes("インポート")) {
-        var nendo = contents.find("#sfkNendo");
-        if (nendo && nendo.val() == new Date().getFullYear()) nendo.val(nendo.val() - 1);
-        nendo = contents.find("#nendo");
-        if (nendo && nendo.val() == new Date().getFullYear()) nendo.val(nendo.val() - 1);
-
-        if (courseName) {
-            //var kaikoKamokunm = contents.find("#kaikoKamokunm");
-            //if (kaikoKamokunm) kaikoKamokunm.val(courseName);
-            var td = contents.find("td:contains('" + courseName + "')");
-            console.log(td.length);
-            if(td.length) td.parent().css("background-color", "#f0f0f0");
-        }
-        if (kyokanName) {
-            var kyokannm = contents.find("#kyokannm");
-            if (kyokannm) kyokannm.val(kyokanName);
-        }
-    }
-
-    var importButton = contents.find(":input[name='_eventId_syllabusImport']");
-    if (importButton) {
-        importButton.click(function (e) {
-            var th = contents.find("th:contains('科目名'):contains('日本語'):first");
-            if (th) courseName = th.next().text().trim();
-            th = contents.find("th:contains('主担当教員'):contains('日本語'):first");
-            if (th) kyokanName = th.next().text().trim();
-        });
-
-        var insertExamplesButton = $("<button>空欄に文例を挿入</button>");
-        insertExamplesButton.appendTo(importButton.parent());
-        insertExamplesButton.click(function (e) {
-            Object.keys(examples).forEach(function (key) {
-                var input = contents.find("#" + key);
-                if (input && input.val().length == 0) input.val(examples[key]);
-            });
-            e.preventDefault();
-        });
-    }
-
-
-    var table = contents.find("table").has("th:contains('開講')");
-    if (table.length) {
-        var th = table.find("th:contains('開講'):first");
-
-        if (th) {
-            var i = table.find("th").index(th);
-            var sorter = $("<a href=''>▼</a>");
-            sorter.click(function (e) {
-                var tbody = table.find("tbody");
-                var trs = tbody.find("tr:gt(0)").sort(function (a, b) {
-                    var atext = $(a).children().eq(i).text().trim();
-                    var btext = $(b).children().eq(i).text().trim();
-                    var result = terms.indexOf(atext) - terms.indexOf(btext);
-
-                    if (result == 0) {
-                        var ano = Number($(a).children().eq(0).text().trim());
-                        var bno = Number($(b).children().eq(0).text().trim());
-                        result = ano - bno;
-                    }
-
-                    return result;
-                }).appendTo(tbody);
+            const showAll = $("<button style='margin-left: 1em'>全所属を表示</button>");
+            showAll.click(function (e) {
+                shozokuSelect.children().show();
                 e.preventDefault();
             });
-            th.append(sorter);
+            gakkiSelect.after(showAll);
         }
+
+        const defaultSelection = shozokuSelect.find(":contains('指示なし')");
+        if (!defaultSelection.length) {
+            shozokuSelect.prepend($('<option value="" style="" selected>指示なし</option>'));
+        }
+    });
+}
+
+const title = $("#main-portlet-title > span").text();
+if (title && title.includes("インポート")) {
+    const nendo = $("#sfkNendo");
+    if (nendo && nendo.val() == new Date().getFullYear()) nendo.val(nendo.val() - 1);
+    nendo = $("#nendo");
+    if (nendo && nendo.val() == new Date().getFullYear()) nendo.val(nendo.val() - 1);
+
+    if (courseName) {
+        //var kaikoKamokunm = $("#kaikoKamokunm");
+        //if (kaikoKamokunm) kaikoKamokunm.val(courseName);
+        const td = $("td:contains('" + courseName + "')");
+        if(td.length) td.parent().css("background-color", "#f0f0f0");
     }
-});
+    if (kyokanName) {
+        const kyokannm = $("#kyokannm");
+        if (kyokannm) kyokannm.val(kyokanName);
+    }
+}
+
+const importButton = $(":input[name='_eventId_syllabusImport']");
+if (importButton) {
+    importButton.click(function (e) {
+        const th = $("th:contains('科目名'):contains('日本語'):first");
+        if (th) courseName = th.next().text().trim();
+        th = $("th:contains('主担当教員'):contains('日本語'):first");
+        if (th) kyokanName = th.next().text().trim();
+    });
+
+    const insertExamplesButton = $("<button>空欄に文例を挿入</button>");
+    insertExamplesButton.appendTo(importButton.parent());
+    insertExamplesButton.click(function (e) {
+        Object.keys(examples).forEach(function (key) {
+            const input = $("#" + key);
+            if (input && input.val().length == 0) input.val(examples[key]);
+        });
+        e.preventDefault();
+    });
+}
+
+
+const table = $("table").has("th:contains('開講')");
+if (table) {
+    console.log("syllabus.js: syllabus table found.");
+    const th = table.find("th:contains('開講'):first");
+    const tbody = table.find("tbody");
+
+    if (th) {
+        const i = table.find("th").index(th);
+        const sorter = $("<a href=''>▼</a>");
+        sorter.click(function (e) {
+            e.preventDefault();
+            const trs = tbody.find("tr:gt(0)").sort(function (a, b) {
+                const atext = $(a).children().eq(i).text().trim();
+                const btext = $(b).children().eq(i).text().trim();
+                let result = terms.indexOf(atext) - terms.indexOf(btext);
+
+                if (result == 0) {
+                    const ano = Number($(a).children().eq(0).text().trim());
+                    const bno = Number($(b).children().eq(0).text().trim());
+                    result = ano - bno;
+                }
+
+                return result;
+            }).appendTo(tbody);
+        });
+        th.append(sorter);
+    }
+
+    const dayOfWeek = [ "日", "月", "火", "水", "木", "金", "土" ][(new Date()).getDay()];
+
+    const th2 = table.find("th:contains('曜日・時限'):first");
+    const i2 = table.find("th").index(th2);
+    const rows = tbody.find("tr:gt(0)");
+    const todayRows = rows.filter(function(index){
+        return $(this).children().eq(i2).text().includes(dayOfWeek);
+    })
+
+    todayRows.css('border', '2px dashed black');
+    console.log(todayRows);
+}
