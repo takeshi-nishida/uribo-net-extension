@@ -3,3 +3,4 @@
 .vs/slnx.sqlite
 .vs/VSWorkspaceState.json
 .vs/config/applicationhost.config
+*.pem

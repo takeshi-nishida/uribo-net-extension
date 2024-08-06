@@ -1,7 +1,7 @@
 ﻿{
-  "manifest_version": 2,
+  "manifest_version": 3,
   "name": "Uribo-Net extension",
-  "version": "0.0.3",
+  "version": "1.0.0",
 
   "description": "神戸大学教務情報システム「うりぼーネット」を少し便利にする拡張機能です",
 
@@ -15,7 +15,7 @@
     "16":  "icons/icon16.png"
   },
 
-  "browser_action": {
+  "action": {
     "default_icon": {
       "32": "icons/icon32.png",
       "16": "icons/icon16.png"
@@ -36,13 +36,11 @@
   ],
 
   "background": {
-    "scripts": [ "background.js" ],
-    "persistent": false
+    "service_worker": "background.js"
   },
 
   "options_ui": {
-    "page": "options.html",
-    "chrome_style": true
+    "page": "options.html"
   },
 
   "permissions": [ "storage" ]
