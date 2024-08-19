@@ -4,7 +4,7 @@ console.log("running enquete.js");
 
 const resultForm = $("#enqueteResultCsv");
 
-if (resultForm) {
+if (resultForm.length) {
     console.log("enquete result found.");
     const eTable = resultForm.find("table:" + evaluations.map(function (e) { return "contains(" + e + ")" }).join(":"));
 

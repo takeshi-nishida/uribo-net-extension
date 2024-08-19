@@ -23,7 +23,7 @@ console.log("running syllabus.js");
 
 const shozokuSelect = $("#jikanwariShozokuCode");
 
-if (shozokuSelect) {
+if (shozokuSelect.length) {
     console.log("syllabus.js: shozoku select found.");
 
     shozokuSelect.change(function () { $("#kyokannm").val(""); });
@@ -60,7 +60,7 @@ if (shozokuSelect) {
 }
 
 const title = $("#main-portlet-title > span").text();
-if (title && title.includes("インポート")) {
+if (title.length && title.includes("インポート")) {
     const nendo = $("#sfkNendo");
     if (nendo && nendo.val() == new Date().getFullYear()) nendo.val(nendo.val() - 1);
     nendo = $("#nendo");
@@ -79,7 +79,7 @@ if (title && title.includes("インポート")) {
 }
 
 const importButton = $(":input[name='_eventId_syllabusImport']");
-if (importButton) {
+if (importButton.length) {
     importButton.click(function (e) {
         const th = $("th:contains('科目名'):contains('日本語'):first");
         if (th) courseName = th.next().text().trim();
@@ -100,7 +100,7 @@ if (importButton) {
 
 
 const table = $("table").has("th:contains('開講')");
-if (table) {
+if (table.length) {
     console.log("syllabus.js: syllabus table found.");
     const th = table.find("th:contains('開講'):first");
     const tbody = table.find("tbody");

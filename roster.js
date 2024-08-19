@@ -1,10 +1,10 @@
-const studentTable = $("table").has("th:contains('現況区分')");
+const studentTable = $("table").has("th:contains('現況区分')").not(":has(table)");
 
-if(studentTable){
+if(studentTable.length){
     console.log("roster.js: student table found.");
     const th = studentTable.find("th:contains('所属'):first");
 
-    if (th) {
+    if (th.length) {
         const m = new Map();
         const i = studentTable.find("th").index(th);
         const tbody = studentTable.find("tbody");
@@ -24,7 +24,7 @@ if(studentTable){
 
         if (sorted.length > 1) {
             const table = $("<table border=='1' cellspacing='0' cellpadding='3' class='normal sp-table-break'></table>");
-            table.append("<tr><th class='normal'>所属集計 (by Uribo-net extension)</th><th class='normal'>人数</th></tr>");
+            table.append("<tr><th class='normal'>集計 (by Uribo-net extension)</th><th class='normal'>人数</th></tr>");
             sorted.forEach(e => 
                 table.append("<tr><td>" + formatShozoku(e[0]) + "</td><td>" + e[1] + "人</td></tr>")
             );
