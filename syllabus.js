@@ -127,15 +127,15 @@ if (table.length) {
         th.append(sorter);
     }
 
-    const dayOfWeek = [ "日", "月", "火", "水", "木", "金", "土" ][(new Date()).getDay()];
+    // const dayOfWeek = [ "日", "月", "火", "水", "木", "金", "土" ][(new Date()).getDay()];
 
-    const th2 = table.find("th:contains('曜日・時限'):first");
-    const i2 = table.find("th").index(th2);
-    const rows = tbody.find("tr:gt(0)");
-    const todayRows = rows.filter(function(index){
-        return $(this).children().eq(i2).text().includes(dayOfWeek);
-    });
+    // const th2 = table.find("th:contains('曜日・時限'):first");
+    // const i2 = table.find("th").index(th2);
+    // const rows = tbody.find("tr:gt(0)");
+    // const todayRows = rows.filter(function(index){
+    //     return $(this).children().eq(i2).text().includes(dayOfWeek);
+    // });
 
-    todayRows.css('border', '2px dashed black');
-    console.log(todayRows);
+    // todayRows.css('border', '2px dashed black');
+    // console.log(todayRows);
 }
