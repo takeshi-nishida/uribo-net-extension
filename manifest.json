@@ -1,7 +1,7 @@
 ﻿{
   "manifest_version": 3,
   "name": "Uribo-Net extension",
-  "version": "1.0.2",
+  "version": "1.0.3",
 
   "description": "神戸大学教務情報システム「うりぼーネット」を少し便利にする拡張機能です",
 
