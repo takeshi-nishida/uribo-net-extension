@@ -101,4 +101,95 @@ function formatShozoku(shozoku) {
     })
     return shozoku;
 }
-    
+
+const links = studentTable.find("a");
+
+if (links.length) {
+  const facePhotoQuizLink = $("<a href='#'>顔写真クイズ</a>");
+
+  facePhotoQuizLink.click(async function (e) {
+    e.preventDefault();
+
+    const data = await collectFacePhotos(links);
+    data.sort(() => Math.random() - 0.5);
+
+    if (data.length) {
+      showQuizModal(data);
+    } else {
+      alert("画像が取得できませんでした");
+    }
+  });
+
+  studentTable.before(facePhotoQuizLink);
+}
+
+async function getFacePhotoUrl(url) {
+  const res = await fetch(url);
+  const text = await res.text();
+
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(text, 'text/html');
+
+  const img = doc.querySelector('img[alt="Face Photo"]');
+  return img ? img.src : null;
+}
+
+async function collectFacePhotos(links) {
+  const results = [];
+
+  for (const a of links.toArray()) {
+    const url = $(a).attr("href");
+    const name = $(a).text().trim();
+
+    const facePhotoUrl = await getFacePhotoUrl(url);
+    if (facePhotoUrl) {
+      results.push({ name, facePhotoUrl });
+    }
+  }
+
+  return results;
+}
+
+function showQuizModal(data) {
+  let index = 0;
+  let showAnswer = false;
+
+  const modal = $(`
+    <div id="face-quiz-modal" style="
+      position:fixed; top:0; left:0; width:100%; height:100%;
+      background:rgba(0,0,0,0.7); display:flex;
+      align-items:center; justify-content:center; z-index:9999;
+    ">
+      <div style="background:white; padding:20px; text-align:center;">
+        <img id="quiz-img" src="" style="max-width:300px;"><br>
+        <div id="quiz-name" style="font-size:20px; margin:10px;"></div>
+        <button id="show-answer">答え</button>
+        <button id="next">次へ</button>
+        <button id="close">閉じる</button>
+      </div>
+    </div>
+  `);
+
+  $("body").append(modal);
+
+  function render() {
+    const item = data[index];
+    $("#quiz-img").attr("src", item.facePhotoUrl);
+    $("#quiz-name").text(showAnswer ? item.name : "？？？");
+  }
+
+  $("#show-answer").click(() => {
+    showAnswer = true;
+    render();
+  });
+
+  $("#next").click(() => {
+    index = (index + 1) % data.length;
+    showAnswer = false;
+    render();
+  });
+
+  $("#close").click(() => modal.remove());
+
+  render();
+}
